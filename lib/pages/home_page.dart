@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File? selectedImage;
+  final List<File> _images = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +35,15 @@ class _HomePageState extends State<HomePage> {
               child: Text("Make a photo"),
             ),
             SizedBox(height: 16.0),
-            selectedImage != null
-                ? Image.file(selectedImage!)
-                : Text("Select image or make a photo!"),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _images.length,
+                itemBuilder: (context, index) {
+                  File image = _images[index];
+                  return Image.file(image);
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -52,7 +58,7 @@ class _HomePageState extends State<HomePage> {
     if (returnedXFile == null) return;
 
     setState(() {
-      selectedImage = File(returnedXFile.path);
+      _images.add(File(returnedXFile.path));
     });
   }
 
@@ -64,7 +70,7 @@ class _HomePageState extends State<HomePage> {
     if (returnedXFile == null) return;
 
     setState(() {
-      selectedImage = File(returnedXFile.path);
+      _images.add(File(returnedXFile.path));
     });
   }
 }
